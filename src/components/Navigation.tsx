@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
-import { Home, Book, Calendar, Camera, User, Map, Navigation as NavIcon, Mountain, Phone, Mail } from 'lucide-react';
+import { Home, Book, Calendar, Camera, User, Map, Navigation as NavIcon, Mountain, Phone, Mail, Settings } from 'lucide-react';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +37,17 @@ const Navigation = () => {
               <span>info@sikkimtourism.gov.in</span>
             </div>
           </div>
-          <div className="hidden md:block text-xs">
-            Discover the Land of Mystical Beauty
+          <div className="flex items-center space-x-4">
+            <div className="hidden md:block text-xs">
+              Discover the Land of Mystical Beauty
+            </div>
+            <Link
+              to="/admin"
+              className="flex items-center space-x-1 px-3 py-1 bg-emerald-700 hover:bg-emerald-600 rounded-md transition-colors duration-200 text-xs"
+            >
+              <Settings className="w-3 h-3" />
+              <span>Admin</span>
+            </Link>
           </div>
         </div>
       </div>
