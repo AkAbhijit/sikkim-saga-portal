@@ -1,174 +1,200 @@
 
-import React, { useState } from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+import React from 'react';
 import { useContent } from '../contexts/ContentContext';
-import { Mountain, TreePine, Heart, Leaf } from 'lucide-react';
+import { Camera, Leaf, Mountain, Bird, TreePine, Shield, Eye, MapPin } from 'lucide-react';
 
 const Nature = () => {
-  const { theme } = useTheme();
   const { content } = useContent();
-  const [selectedType, setSelectedType] = useState<string>('all');
 
-  const types = ['all', 'wildlife', 'peak', 'conservation', 'biodiversity'];
+  const highlights = [
+    {
+      icon: Mountain,
+      title: "Kanchenjunga National Park",
+      description: "UNESCO World Heritage Site home to diverse flora and fauna",
+      image: "/placeholder.svg"
+    },
+    {
+      icon: Bird,
+      title: "Himalayan Wildlife",
+      description: "Red pandas, snow leopards, and 550+ bird species",
+      image: "/placeholder.svg"
+    },
+    {
+      icon: TreePine,
+      title: "Alpine Forests",
+      description: "Pristine rhododendron forests and medicinal plants",
+      image: "/placeholder.svg"
+    },
+    {
+      icon: Leaf,
+      title: "Biodiversity Hotspot",
+      description: "Over 4,000 flowering plants and rare orchids",
+      image: "/placeholder.svg"
+    }
+  ];
 
-  const filteredItems = content.natureItems.filter(item => {
-    return selectedType === 'all' || item.type === selectedType;
-  });
-
-  const spacingClass = theme.spacing === 'compact' ? 'py-2' : theme.spacing === 'relaxed' ? 'py-8' : 'py-4';
+  const conservationPrograms = [
+    {
+      title: "Community Forest Management",
+      description: "Local communities actively participate in forest conservation and sustainable tourism practices.",
+      impact: "Protected 2,500+ hectares"
+    },
+    {
+      title: "Wildlife Corridor Protection",
+      description: "Maintaining crucial wildlife corridors for animal migration and genetic diversity.",
+      impact: "Connected 5 protected areas"
+    },
+    {
+      title: "Organic Farming Initiative",
+      description: "Promoting pesticide-free agriculture to protect soil and water resources.",
+      impact: "100% organic state goal"
+    }
+  ];
 
   return (
-    <div className={`min-h-screen bg-${theme.backgroundColor}`}>
-      {/* Header */}
-      <div className={`bg-gradient-to-r from-green-600 to-blue-600 text-white ${spacingClass}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className={`text-4xl md:text-5xl ${theme.headingFont} mb-4`}>
-            Nature & Biodiversity
-          </h1>
-          <p className={`text-xl ${theme.bodyFont} opacity-90 max-w-3xl`}>
-            Discover Sikkim's incredible natural heritage, from the towering peaks 
-            of the Himalayas to the rich biodiversity of its protected forests.
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-slate-100">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-emerald-600 to-teal-700 text-white">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm">
+                <Leaf className="w-12 h-12" />
+              </div>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              Nature & Biodiversity
+            </h1>
+            <p className="text-xl md:text-2xl text-emerald-100 max-w-3xl mx-auto leading-relaxed">
+              Discover Sikkim's pristine ecosystems, from alpine meadows to subtropical forests, 
+              home to some of the world's most endangered species.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Key Statistics */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">4,000+</div>
+              <div className="text-slate-600">Flowering Plants</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">550+</div>
+              <div className="text-slate-600">Bird Species</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">35%</div>
+              <div className="text-slate-600">Forest Coverage</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">8</div>
+              <div className="text-slate-600">Protected Areas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Nature Highlights */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+            Natural Treasures
+          </h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            Explore the diverse ecosystems that make Sikkim a global biodiversity hotspot
           </p>
         </div>
-      </div>
 
-      {/* Stats Section */}
-      <div className={`bg-white ${spacingClass}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className={`text-3xl ${theme.headingFont} text-${theme.primaryColor} mb-2`}>
-                28%
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          {highlights.map((highlight, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="h-48 bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                <highlight.icon className="w-16 h-16 text-white" />
               </div>
-              <p className={`text-${theme.textColor} ${theme.bodyFont}`}>
-                Forest Coverage
-              </p>
-            </div>
-            <div>
-              <div className={`text-3xl ${theme.headingFont} text-${theme.primaryColor} mb-2`}>
-                4,000+
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-slate-800 mb-2">{highlight.title}</h3>
+                <p className="text-slate-600">{highlight.description}</p>
               </div>
-              <p className={`text-${theme.textColor} ${theme.bodyFont}`}>
-                Flowering Plants
-              </p>
             </div>
-            <div>
-              <div className={`text-3xl ${theme.headingFont} text-${theme.primaryColor} mb-2`}>
-                550+
-              </div>
-              <p className={`text-${theme.textColor} ${theme.bodyFont}`}>
-                Bird Species
-              </p>
-            </div>
-            <div>
-              <div className={`text-3xl ${theme.headingFont} text-${theme.primaryColor} mb-2`}>
-                6
-              </div>
-              <p className={`text-${theme.textColor} ${theme.bodyFont}`}>
-                National Parks
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
 
-      {/* Filters */}
-      <div className={`bg-gray-50 ${spacingClass}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-4">
-            {types.map(type => (
-              <button
-                key={type}
-                onClick={() => setSelectedType(type)}
-                className={`px-6 py-2 rounded-full transition-colors ${theme.bodyFont} ${
-                  selectedType === type
-                    ? `bg-${theme.primaryColor} text-white`
-                    : `bg-white hover:bg-${theme.primaryColor} hover:text-white text-${theme.textColor} border border-gray-200`
-                }`}
-              >
-                {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Nature Items */}
-      <div className={`${spacingClass}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems.map((item) => (
-              <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <img 
-                  src={item.images[0]} 
-                  alt={item.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <span className={`px-3 py-1 bg-${theme.primaryColor} text-white text-sm rounded-full ${theme.bodyFont}`}>
-                      {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
-                    </span>
-                    <span className={`text-sm text-${theme.secondaryColor} ${theme.bodyFont}`}>
-                      {item.location}
-                    </span>
+        {/* Featured Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+          <div>
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Endemic Species</h3>
+            <div className="space-y-4">
+              {content.nature.wildlife.map((animal, index) => (
+                <div key={index} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-emerald-500">
+                  <h4 className="font-semibold text-slate-800 mb-2">{animal.name}</h4>
+                  <p className="text-slate-600 mb-2">{animal.description}</p>
+                  <div className="flex items-center text-sm text-emerald-600">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    <span>{animal.habitat}</span>
                   </div>
-                  <h3 className={`text-xl ${theme.headingFont} text-${theme.textColor} mb-3`}>
-                    {item.title}
-                  </h3>
-                  <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont}`}>
-                    {item.description}
-                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Flora & Vegetation</h3>
+            <div className="space-y-4">
+              {content.nature.flora.map((plant, index) => (
+                <div key={index} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-teal-500">
+                  <h4 className="font-semibold text-slate-800 mb-2">{plant.name}</h4>
+                  <p className="text-slate-600 mb-2">{plant.description}</p>
+                  <div className="flex items-center text-sm text-teal-600">
+                    <Eye className="w-4 h-4 mr-1" />
+                    <span>Best seen: {plant.season}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Conservation Efforts */}
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-2xl p-8 md:p-12">
+          <div className="text-center mb-12">
+            <Shield className="w-12 h-12 mx-auto mb-4" />
+            <h3 className="text-3xl font-bold mb-4">Conservation Initiatives</h3>
+            <p className="text-emerald-100 text-lg max-w-2xl mx-auto">
+              Sikkim leads India in environmental conservation with innovative programs 
+              that balance development with ecological preservation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {conservationPrograms.map((program, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                <h4 className="text-xl font-semibold mb-3">{program.title}</h4>
+                <p className="text-emerald-100 mb-4">{program.description}</p>
+                <div className="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block">
+                  {program.impact}
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Conservation Section */}
-      <div className={`bg-green-50 ${spacingClass}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className={`text-3xl ${theme.headingFont} text-${theme.textColor} mb-8 text-center`}>
-            Conservation Efforts
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <Heart className={`w-12 h-12 text-${theme.primaryColor} mx-auto mb-4`} />
-              <h3 className={`text-lg ${theme.headingFont} text-${theme.textColor} mb-2`}>
-                Protected Areas
-              </h3>
-              <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont} text-sm`}>
-                Over 35% of Sikkim is under protection through national parks and wildlife sanctuaries.
-              </p>
-            </div>
-            <div className="text-center">
-              <TreePine className={`w-12 h-12 text-${theme.primaryColor} mx-auto mb-4`} />
-              <h3 className={`text-lg ${theme.headingFont} text-${theme.textColor} mb-2`}>
-                Organic State
-              </h3>
-              <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont} text-sm`}>
-                Sikkim is India's first fully organic state, promoting sustainable agriculture.
-              </p>
-            </div>
-            <div className="text-center">
-              <Mountain className={`w-12 h-12 text-${theme.primaryColor} mx-auto mb-4`} />
-              <h3 className={`text-lg ${theme.headingFont} text-${theme.textColor} mb-2`}>
-                Sacred Peaks
-              </h3>
-              <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont} text-sm`}>
-                Mountains like Kanchenjunga are protected as sacred sites by local communities.
-              </p>
-            </div>
-            <div className="text-center">
-              <Leaf className={`w-12 h-12 text-${theme.primaryColor} mx-auto mb-4`} />
-              <h3 className={`text-lg ${theme.headingFont} text-${theme.textColor} mb-2`}>
-                Carbon Negative
-              </h3>
-              <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont} text-sm`}>
-                Sikkim absorbs more carbon than it produces, contributing to climate solutions.
-              </p>
-            </div>
+        {/* Call to Action */}
+        <div className="text-center mt-16">
+          <h3 className="text-2xl font-bold text-slate-800 mb-4">Plan Your Nature Experience</h3>
+          <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+            Discover Sikkim's natural wonders through eco-friendly tours and sustainable tourism practices.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+              Explore Experiences
+            </button>
+            <button className="border border-emerald-600 text-emerald-600 hover:bg-emerald-50 px-8 py-3 rounded-lg font-medium transition-colors">
+              Conservation Programs
+            </button>
           </div>
         </div>
       </div>

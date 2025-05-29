@@ -19,10 +19,10 @@ export interface ThemeContextType {
 
 const defaultTheme: ThemeConfig = {
   primaryColor: 'emerald-600',
-  secondaryColor: 'orange-500',
-  backgroundColor: 'white',
-  textColor: 'gray-900',
-  headingFont: 'font-bold',
+  secondaryColor: 'teal-500',
+  backgroundColor: 'slate-50',
+  textColor: 'slate-800',
+  headingFont: 'font-semibold',
   bodyFont: 'font-normal',
   spacing: 'normal'
 };
