@@ -51,6 +51,10 @@ const Nature = () => {
     }
   ];
 
+  // Filter nature items by type
+  const wildlifeItems = content.natureItems.filter(item => item.type === 'wildlife');
+  const floraItems = content.natureItems.filter(item => item.type === 'biodiversity' || item.type === 'conservation');
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-slate-100">
       {/* Hero Section */}
@@ -126,34 +130,54 @@ const Nature = () => {
         {/* Featured Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">Endemic Species</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Wildlife & Animals</h3>
             <div className="space-y-4">
-              {content.nature.wildlife.map((animal, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-emerald-500">
-                  <h4 className="font-semibold text-slate-800 mb-2">{animal.name}</h4>
-                  <p className="text-slate-600 mb-2">{animal.description}</p>
+              {wildlifeItems.map((item) => (
+                <div key={item.id} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-emerald-500">
+                  <h4 className="font-semibold text-slate-800 mb-2">{item.title}</h4>
+                  <p className="text-slate-600 mb-2">{item.description}</p>
                   <div className="flex items-center text-sm text-emerald-600">
                     <MapPin className="w-4 h-4 mr-1" />
-                    <span>{animal.habitat}</span>
+                    <span>{item.location}</span>
                   </div>
                 </div>
               ))}
+              {wildlifeItems.length === 0 && (
+                <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-emerald-500">
+                  <h4 className="font-semibold text-slate-800 mb-2">Red Panda</h4>
+                  <p className="text-slate-600 mb-2">State animal of Sikkim, found in the temperate forests</p>
+                  <div className="flex items-center text-sm text-emerald-600">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    <span>Alpine forests of Sikkim</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">Flora & Vegetation</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Flora & Conservation</h3>
             <div className="space-y-4">
-              {content.nature.flora.map((plant, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-teal-500">
-                  <h4 className="font-semibold text-slate-800 mb-2">{plant.name}</h4>
-                  <p className="text-slate-600 mb-2">{plant.description}</p>
+              {floraItems.map((item) => (
+                <div key={item.id} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-teal-500">
+                  <h4 className="font-semibold text-slate-800 mb-2">{item.title}</h4>
+                  <p className="text-slate-600 mb-2">{item.description}</p>
                   <div className="flex items-center text-sm text-teal-600">
                     <Eye className="w-4 h-4 mr-1" />
-                    <span>Best seen: {plant.season}</span>
+                    <span>Location: {item.location}</span>
                   </div>
                 </div>
               ))}
+              {floraItems.length === 0 && (
+                <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-teal-500">
+                  <h4 className="font-semibold text-slate-800 mb-2">Rhododendron Forests</h4>
+                  <p className="text-slate-600 mb-2">Over 40 species of rhododendrons bloom across Sikkim's mountains</p>
+                  <div className="flex items-center text-sm text-teal-600">
+                    <Eye className="w-4 h-4 mr-1" />
+                    <span>Best seen: March to May</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
