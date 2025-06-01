@@ -18,8 +18,8 @@ export interface ThemeContextType {
 }
 
 const defaultTheme: ThemeConfig = {
-  primaryColor: 'emerald-600',
-  secondaryColor: 'teal-500',
+  primaryColor: 'emerald-500',
+  secondaryColor: 'emerald-600',
   backgroundColor: 'slate-50',
   textColor: 'slate-800',
   headingFont: 'font-semibold',
