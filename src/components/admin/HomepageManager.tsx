@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useContent } from '../../contexts/ContentContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -10,6 +11,7 @@ const HomepageManager = () => {
   // Provide fallback values if homepageSettings is undefined
   const defaultSettings = {
     heroImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    heroVideo: '',
     heroTitle: 'Welcome to Sikkim',
     heroSubtitle: 'Land of Mystical Mountains, Rich Culture, and Warm Hearts',
     introductionText: 'Nestled in the Eastern Himalayas, Sikkim is a treasure trove of natural beauty, ancient traditions, and diverse cultures.',
