@@ -2,14 +2,22 @@
 import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useContent } from '../contexts/ContentContext';
+import { useAuth } from '../contexts/AuthContext';
 import ThemeCustomizer from '../components/admin/ThemeCustomizer';
 import ContentManager from '../components/admin/ContentManager';
 import HomepageManager from '../components/admin/HomepageManager';
-import { Settings, FileText, Eye, Home } from 'lucide-react';
+import AdminLogin from '../components/admin/AdminLogin';
+import { Settings, FileText, Eye, Home, LogOut } from 'lucide-react';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState<'homepage' | 'theme' | 'content' | 'preview'>('homepage');
   const { theme } = useTheme();
+  const { isAuthenticated, logout } = useAuth();
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <AdminLogin />;
+  }
 
   const tabs = [
     { id: 'homepage', label: 'Homepage', icon: Home },
@@ -23,12 +31,23 @@ const Admin = () => {
       {/* Header */}
       <div className={`bg-${theme.primaryColor} text-white py-6`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className={`text-3xl ${theme.headingFont}`}>
-            Sikkim Culture Portal - Admin Panel
-          </h1>
-          <p className={`mt-2 ${theme.bodyFont} opacity-90`}>
-            Manage your website content and customize the theme
-          </p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className={`text-3xl ${theme.headingFont}`}>
+                Sikkim Culture Portal - Admin Panel
+              </h1>
+              <p className={`mt-2 ${theme.bodyFont} opacity-90`}>
+                Manage your website content and customize the theme
+              </p>
+            </div>
+            <button
+              onClick={logout}
+              className={`flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors ${theme.bodyFont}`}
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
       </div>
 

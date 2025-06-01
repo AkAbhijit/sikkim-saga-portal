@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ContentProvider } from "./contexts/ContentContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
@@ -26,29 +27,31 @@ const App = () => (
     <TooltipProvider>
       <ThemeProvider>
         <ContentProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <div className="min-h-screen flex flex-col bg-slate-50">
-              <Navigation />
-              <main className="flex-1">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/culture" element={<Culture />} />
-                  <Route path="/history" element={<History />} />
-                  <Route path="/nature" element={<Nature />} />
-                  <Route path="/people" element={<People />} />
-                  <Route path="/experiences" element={<Experiences />} />
-                  <Route path="/transport" element={<Transport />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/admin" element={<Admin />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-          </BrowserRouter>
+          <AuthProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <div className="min-h-screen flex flex-col bg-slate-50">
+                <Navigation />
+                <main className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/culture" element={<Culture />} />
+                    <Route path="/history" element={<History />} />
+                    <Route path="/nature" element={<Nature />} />
+                    <Route path="/people" element={<People />} />
+                    <Route path="/experiences" element={<Experiences />} />
+                    <Route path="/transport" element={<Transport />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/admin" element={<Admin />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </BrowserRouter>
+          </AuthProvider>
         </ContentProvider>
       </ThemeProvider>
     </TooltipProvider>
