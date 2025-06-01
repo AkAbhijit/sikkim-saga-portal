@@ -70,6 +70,24 @@ export interface TransportRoute {
   notes: string;
 }
 
+export interface HomepageSettings {
+  heroImage: string;
+  heroVideo?: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  introductionText: string;
+  featuredSections: Array<{
+    id: string;
+    title: string;
+    description: string;
+    link: string;
+    enabled: boolean;
+    order: number;
+  }>;
+  featuredBlogPostIds: string[];
+  maxFeaturedPosts: number;
+}
+
 export interface ContentData {
   blogPosts: BlogPost[];
   cultureItems: CultureItem[];
@@ -78,6 +96,7 @@ export interface ContentData {
   peopleProfiles: PeopleProfile[];
   experiences: Experience[];
   transportRoutes: TransportRoute[];
+  homepageSettings: HomepageSettings;
 }
 
 const initialContent: ContentData = {
@@ -103,6 +122,18 @@ const initialContent: ContentData = {
       publishDate: '2024-02-10',
       tags: ['Losar', 'Festival', 'Tibetan Culture'],
       category: 'Festivals',
+      published: true,
+      featuredImage: '/api/placeholder/600/400'
+    },
+    {
+      id: '3',
+      title: 'Traditional Handicrafts of Sikkim',
+      content: 'The artisans of Sikkim create beautiful handicrafts that reflect the rich cultural heritage...',
+      excerpt: 'Discover the intricate art and craftsmanship of local artisans',
+      author: 'Arts Team',
+      publishDate: '2024-03-05',
+      tags: ['Handicrafts', 'Art', 'Culture'],
+      category: 'Culture',
       published: true,
       featuredImage: '/api/placeholder/600/400'
     }
@@ -191,15 +222,58 @@ const initialContent: ContentData = {
       duration: '3-4 hours',
       notes: 'Scenic route through mountains'
     }
-  ]
+  ],
+  homepageSettings: {
+    heroImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    heroTitle: 'Welcome to Sikkim',
+    heroSubtitle: 'Land of Mystical Mountains, Rich Culture, and Warm Hearts',
+    introductionText: 'Nestled in the Eastern Himalayas, Sikkim is a treasure trove of natural beauty, ancient traditions, and diverse cultures. From the majestic Kanchenjunga to colorful monasteries, every corner tells a story of harmony between nature and humanity.',
+    featuredSections: [
+      {
+        id: 'culture',
+        title: 'Culture & Traditions',
+        description: 'Explore the rich cultural heritage of Sikkim',
+        link: '/culture',
+        enabled: true,
+        order: 1
+      },
+      {
+        id: 'nature',
+        title: 'Natural Beauty',
+        description: 'Discover the breathtaking landscapes and wildlife',
+        link: '/nature',
+        enabled: true,
+        order: 2
+      },
+      {
+        id: 'history',
+        title: 'Rich History',
+        description: 'Journey through Sikkim\'s fascinating past',
+        link: '/history',
+        enabled: true,
+        order: 3
+      },
+      {
+        id: 'people',
+        title: 'Local People',
+        description: 'Meet the diverse communities of Sikkim',
+        link: '/people',
+        enabled: true,
+        order: 4
+      }
+    ],
+    featuredBlogPostIds: ['1', '2', '3'],
+    maxFeaturedPosts: 3
+  }
 };
 
 export interface ContentContextType {
   content: ContentData;
-  updateContent: (section: keyof ContentData, data: any[]) => void;
+  updateContent: (section: keyof ContentData, data: any) => void;
   addItem: (section: keyof ContentData, item: any) => void;
   updateItem: (section: keyof ContentData, id: string, item: any) => void;
   deleteItem: (section: keyof ContentData, id: string) => void;
+  updateHomepageSettings: (settings: Partial<HomepageSettings>) => void;
 }
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
@@ -214,21 +288,21 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     localStorage.setItem('sikkim-content', JSON.stringify(content));
   }, [content]);
 
-  const updateContent = (section: keyof ContentData, data: any[]) => {
+  const updateContent = (section: keyof ContentData, data: any) => {
     setContent(prev => ({ ...prev, [section]: data }));
   };
 
   const addItem = (section: keyof ContentData, item: any) => {
     setContent(prev => ({
       ...prev,
-      [section]: [...prev[section], { ...item, id: Date.now().toString() }]
+      [section]: [...(prev[section] as any[]), { ...item, id: Date.now().toString() }]
     }));
   };
 
   const updateItem = (section: keyof ContentData, id: string, item: any) => {
     setContent(prev => ({
       ...prev,
-      [section]: prev[section].map((existing: any) => 
+      [section]: (prev[section] as any[]).map((existing: any) => 
         existing.id === id ? { ...existing, ...item } : existing
       )
     }));
@@ -237,12 +311,26 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const deleteItem = (section: keyof ContentData, id: string) => {
     setContent(prev => ({
       ...prev,
-      [section]: prev[section].filter((item: any) => item.id !== id)
+      [section]: (prev[section] as any[]).filter((item: any) => item.id !== id)
+    }));
+  };
+
+  const updateHomepageSettings = (settings: Partial<HomepageSettings>) => {
+    setContent(prev => ({
+      ...prev,
+      homepageSettings: { ...prev.homepageSettings, ...settings }
     }));
   };
 
   return (
-    <ContentContext.Provider value={{ content, updateContent, addItem, updateItem, deleteItem }}>
+    <ContentContext.Provider value={{ 
+      content, 
+      updateContent, 
+      addItem, 
+      updateItem, 
+      deleteItem, 
+      updateHomepageSettings 
+    }}>
       {children}
     </ContentContext.Provider>
   );

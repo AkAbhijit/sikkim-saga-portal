@@ -4,13 +4,15 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useContent } from '../contexts/ContentContext';
 import ThemeCustomizer from '../components/admin/ThemeCustomizer';
 import ContentManager from '../components/admin/ContentManager';
-import { Settings, FileText, Eye } from 'lucide-react';
+import HomepageManager from '../components/admin/HomepageManager';
+import { Settings, FileText, Eye, Home } from 'lucide-react';
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState<'theme' | 'content' | 'preview'>('theme');
+  const [activeTab, setActiveTab] = useState<'homepage' | 'theme' | 'content' | 'preview'>('homepage');
   const { theme } = useTheme();
 
   const tabs = [
+    { id: 'homepage', label: 'Homepage', icon: Home },
     { id: 'theme', label: 'Theme Settings', icon: Settings },
     { id: 'content', label: 'Content Management', icon: FileText },
     { id: 'preview', label: 'Live Preview', icon: Eye },
@@ -54,6 +56,7 @@ const Admin = () => {
 
       {/* Tab Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {activeTab === 'homepage' && <HomepageManager />}
         {activeTab === 'theme' && <ThemeCustomizer />}
         {activeTab === 'content' && <ContentManager />}
         {activeTab === 'preview' && (
