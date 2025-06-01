@@ -10,6 +10,17 @@ const Home = () => {
   const { content } = useContent();
   const { homepageSettings } = content;
 
+  // Add fallback values to prevent undefined errors
+  const settings = homepageSettings || {
+    heroImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    heroTitle: 'Welcome to Sikkim',
+    heroSubtitle: 'Land of Mystical Mountains, Rich Culture, and Warm Hearts',
+    introductionText: 'Nestled in the Eastern Himalayas, Sikkim is a treasure trove of natural beauty, ancient traditions, and diverse cultures.',
+    featuredSections: [],
+    featuredBlogPostIds: [],
+    maxFeaturedPosts: 3
+  };
+
   const sectionIcons = {
     culture: Calendar,
     nature: Camera,
@@ -30,13 +41,13 @@ const Home = () => {
 
   const spacingClass = theme.spacing === 'compact' ? 'py-2' : theme.spacing === 'relaxed' ? 'py-8' : 'py-4';
 
-  // Get featured blog posts based on admin settings
+  // Get featured blog posts based on admin settings with safe fallbacks
   const featuredPosts = content.blogPosts
-    .filter(post => post.published && homepageSettings.featuredBlogPostIds.includes(post.id))
-    .slice(0, homepageSettings.maxFeaturedPosts);
+    .filter(post => post.published && settings.featuredBlogPostIds.includes(post.id))
+    .slice(0, settings.maxFeaturedPosts);
 
-  // Get enabled and sorted featured sections
-  const enabledSections = homepageSettings.featuredSections
+  // Get enabled and sorted featured sections with safe fallbacks
+  const enabledSections = settings.featuredSections
     .filter(section => section.enabled)
     .sort((a, b) => a.order - b.order);
 
@@ -46,27 +57,27 @@ const Home = () => {
       <div 
         className="relative h-96 md:h-screen bg-gradient-to-r from-blue-600 to-purple-700 bg-cover bg-center"
         style={{ 
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${homepageSettings.heroImage})`
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${settings.heroImage})`
         }}
       >
-        {homepageSettings.heroVideo && (
+        {settings.heroVideo && (
           <video
             autoPlay
             muted
             loop
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src={homepageSettings.heroVideo} type="video/mp4" />
+            <source src={settings.heroVideo} type="video/mp4" />
           </video>
         )}
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div className="relative z-10 flex items-center justify-center h-full text-center text-white px-4">
           <div className="max-w-4xl mx-auto">
             <h1 className={`text-4xl md:text-6xl lg:text-7xl ${theme.headingFont} mb-6`}>
-              {homepageSettings.heroTitle}
+              {settings.heroTitle}
             </h1>
             <p className={`text-xl md:text-2xl ${theme.bodyFont} mb-8 opacity-90`}>
-              {homepageSettings.heroSubtitle}
+              {settings.heroSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -94,48 +105,50 @@ const Home = () => {
               Discover the Magic of Sikkim
             </h2>
             <p className={`text-lg text-${theme.textColor} opacity-80 max-w-3xl mx-auto ${theme.bodyFont}`}>
-              {homepageSettings.introductionText}
+              {settings.introductionText}
             </p>
           </div>
         </div>
       </div>
 
       {/* Featured Sections */}
-      <div className={`${spacingClass} bg-gray-50`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className={`text-3xl ${theme.headingFont} text-center text-${theme.textColor} mb-12`}>
-            Explore Sikkim
-          </h2>
-          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(enabledSections.length, 4)} gap-6`}>
-            {enabledSections.map((section) => {
-              const IconComponent = sectionIcons[section.id as keyof typeof sectionIcons] || Calendar;
-              const colorClass = sectionColors[section.id as keyof typeof sectionColors] || 'from-gray-500 to-gray-600';
-              
-              return (
-                <Link
-                  key={section.id}
-                  to={section.link}
-                  className="group transform hover:scale-105 transition-transform duration-300"
-                >
-                  <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className={`h-32 bg-gradient-to-r ${colorClass} flex items-center justify-center`}>
-                      <IconComponent className="w-12 h-12 text-white" />
+      {enabledSections.length > 0 && (
+        <div className={`${spacingClass} bg-gray-50`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className={`text-3xl ${theme.headingFont} text-center text-${theme.textColor} mb-12`}>
+              Explore Sikkim
+            </h2>
+            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(enabledSections.length, 4)} gap-6`}>
+              {enabledSections.map((section) => {
+                const IconComponent = sectionIcons[section.id as keyof typeof sectionIcons] || Calendar;
+                const colorClass = sectionColors[section.id as keyof typeof sectionColors] || 'from-gray-500 to-gray-600';
+                
+                return (
+                  <Link
+                    key={section.id}
+                    to={section.link}
+                    className="group transform hover:scale-105 transition-transform duration-300"
+                  >
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                      <div className={`h-32 bg-gradient-to-r ${colorClass} flex items-center justify-center`}>
+                        <IconComponent className="w-12 h-12 text-white" />
+                      </div>
+                      <div className="p-6">
+                        <h3 className={`text-xl ${theme.headingFont} text-${theme.textColor} mb-3`}>
+                          {section.title}
+                        </h3>
+                        <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont}`}>
+                          {section.description}
+                        </p>
+                      </div>
                     </div>
-                    <div className="p-6">
-                      <h3 className={`text-xl ${theme.headingFont} text-${theme.textColor} mb-3`}>
-                        {section.title}
-                      </h3>
-                      <p className={`text-${theme.textColor} opacity-70 ${theme.bodyFont}`}>
-                        {section.description}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Featured Blog Posts */}
       {featuredPosts.length > 0 && (
