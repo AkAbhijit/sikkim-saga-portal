@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useContent } from '../../contexts/ContentContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -7,7 +6,52 @@ import { Save, Upload, Eye, EyeOff, ArrowUp, ArrowDown, Plus, Trash2 } from 'luc
 const HomepageManager = () => {
   const { content, updateHomepageSettings } = useContent();
   const { theme } = useTheme();
-  const [settings, setSettings] = useState(content.homepageSettings);
+  
+  // Provide fallback values if homepageSettings is undefined
+  const defaultSettings = {
+    heroImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+    heroTitle: 'Welcome to Sikkim',
+    heroSubtitle: 'Land of Mystical Mountains, Rich Culture, and Warm Hearts',
+    introductionText: 'Nestled in the Eastern Himalayas, Sikkim is a treasure trove of natural beauty, ancient traditions, and diverse cultures.',
+    featuredSections: [
+      {
+        id: 'culture',
+        title: 'Culture & Traditions',
+        description: 'Explore the rich cultural heritage of Sikkim',
+        link: '/culture',
+        enabled: true,
+        order: 1
+      },
+      {
+        id: 'nature',
+        title: 'Natural Beauty',
+        description: 'Discover the breathtaking landscapes and wildlife',
+        link: '/nature',
+        enabled: true,
+        order: 2
+      },
+      {
+        id: 'history',
+        title: 'Rich History',
+        description: 'Journey through Sikkim\'s fascinating past',
+        link: '/history',
+        enabled: true,
+        order: 3
+      },
+      {
+        id: 'people',
+        title: 'Local People',
+        description: 'Meet the diverse communities of Sikkim',
+        link: '/people',
+        enabled: true,
+        order: 4
+      }
+    ],
+    featuredBlogPostIds: [],
+    maxFeaturedPosts: 3
+  };
+
+  const [settings, setSettings] = useState(content.homepageSettings || defaultSettings);
 
   const handleSave = () => {
     updateHomepageSettings(settings);
