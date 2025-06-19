@@ -66,7 +66,7 @@ export class BaseApiService {
 
   protected async handlePaginatedRequest<T>(
     request: Promise<AxiosResponse<IPaginatedResponse<T>>>
-  ): Promise<IPaginatedResponse<T>['data'] & { total: number; page: number; limit: number; totalPages: number }> {
+  ): Promise<{ data: T[]; total: number; page: number; limit: number; totalPages: number }> {
     try {
       const response = await request;
       if (response.data.success) {

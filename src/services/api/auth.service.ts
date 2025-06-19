@@ -4,28 +4,28 @@ import { IUser, IAuthResponse, ILoginCredentials } from '../../types/models';
 
 export class AuthService extends BaseApiService {
   async login(credentials: ILoginCredentials): Promise<IAuthResponse> {
-    return this.handleRequest(
-      this.axios.post<IAuthResponse>('/auth/login', credentials)
+    return this.handleRequest<IAuthResponse>(
+      this.axios.post('/auth/login', credentials)
     );
   }
 
   async register(userData: Omit<IUser, '_id' | 'createdAt' | 'updatedAt' | '__v'>): Promise<IAuthResponse> {
-    return this.handleRequest(
-      this.axios.post<IAuthResponse>('/auth/register', userData)
+    return this.handleRequest<IAuthResponse>(
+      this.axios.post('/auth/register', userData)
     );
   }
 
   async refreshToken(refreshToken: string): Promise<IAuthResponse> {
-    return this.handleRequest(
-      this.axios.post<IAuthResponse>('/auth/refresh', { refreshToken })
+    return this.handleRequest<IAuthResponse>(
+      this.axios.post('/auth/refresh', { refreshToken })
     );
   }
 
   async logout(): Promise<void> {
     const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
-      await this.handleRequest(
-        this.axios.post<void>('/auth/logout', { refreshToken })
+      await this.handleRequest<void>(
+        this.axios.post('/auth/logout', { refreshToken })
       );
     }
     localStorage.removeItem('accessToken');
@@ -33,8 +33,8 @@ export class AuthService extends BaseApiService {
   }
 
   async getCurrentUser(): Promise<Omit<IUser, 'password'>> {
-    return this.handleRequest(
-      this.axios.get<Omit<IUser, 'password'>>('/auth/me')
+    return this.handleRequest<Omit<IUser, 'password'>>(
+      this.axios.get('/auth/me')
     );
   }
 }

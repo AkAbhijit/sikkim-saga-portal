@@ -4,32 +4,32 @@ import { IContentSection, IContentEntry, ContentSectionType } from '../../types/
 
 export class ContentService extends BaseApiService {
   async getContentSection(sectionType: ContentSectionType): Promise<IContentSection> {
-    return this.handleRequest(
-      this.axios.get<IContentSection>(`/content/${sectionType}`)
+    return this.handleRequest<IContentSection>(
+      this.axios.get(`/content/${sectionType}`)
     );
   }
 
   async updateContentSection(sectionType: ContentSectionType, entries: Omit<IContentEntry, '_id' | 'createdAt' | 'updatedAt'>[]): Promise<IContentSection> {
-    return this.handleRequest(
-      this.axios.put<IContentSection>(`/content/${sectionType}`, { entries })
+    return this.handleRequest<IContentSection>(
+      this.axios.put(`/content/${sectionType}`, { entries })
     );
   }
 
   async addContentEntry(sectionType: ContentSectionType, entry: Omit<IContentEntry, '_id' | 'createdAt' | 'updatedAt'>): Promise<IContentSection> {
-    return this.handleRequest(
-      this.axios.post<IContentSection>(`/content/${sectionType}/entries`, entry)
+    return this.handleRequest<IContentSection>(
+      this.axios.post(`/content/${sectionType}/entries`, entry)
     );
   }
 
   async updateContentEntry(sectionType: ContentSectionType, entryId: string, entry: Partial<Omit<IContentEntry, '_id' | 'createdAt' | 'updatedAt'>>): Promise<IContentSection> {
-    return this.handleRequest(
-      this.axios.put<IContentSection>(`/content/${sectionType}/entries/${entryId}`, entry)
+    return this.handleRequest<IContentSection>(
+      this.axios.put(`/content/${sectionType}/entries/${entryId}`, entry)
     );
   }
 
   async deleteContentEntry(sectionType: ContentSectionType, entryId: string): Promise<IContentSection> {
-    return this.handleRequest(
-      this.axios.delete<IContentSection>(`/content/${sectionType}/entries/${entryId}`)
+    return this.handleRequest<IContentSection>(
+      this.axios.delete(`/content/${sectionType}/entries/${entryId}`)
     );
   }
 }

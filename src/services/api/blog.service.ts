@@ -3,57 +3,57 @@ import { BaseApiService } from './base.service';
 import { IBlogPost, IPaginatedResponse } from '../../types/models';
 
 export class BlogService extends BaseApiService {
-  async getAllBlogs(page = 1, limit = 10, published?: boolean): Promise<IPaginatedResponse<IBlogPost>['data'] & { total: number; page: number; limit: number; totalPages: number }> {
+  async getAllBlogs(page = 1, limit = 10, published?: boolean): Promise<{ data: IBlogPost[]; total: number; page: number; limit: number; totalPages: number }> {
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
       ...(published !== undefined && { published: published.toString() }),
     });
 
-    return this.handlePaginatedRequest(
-      this.axios.get<IPaginatedResponse<IBlogPost>>(`/blogs?${params}`)
+    return this.handlePaginatedRequest<IBlogPost>(
+      this.axios.get(`/blogs?${params}`)
     );
   }
 
   async getBlogById(id: string): Promise<IBlogPost> {
-    return this.handleRequest(
-      this.axios.get<IBlogPost>(`/blogs/${id}`)
+    return this.handleRequest<IBlogPost>(
+      this.axios.get(`/blogs/${id}`)
     );
   }
 
   async getBlogBySlug(slug: string): Promise<IBlogPost> {
-    return this.handleRequest(
-      this.axios.get<IBlogPost>(`/blogs/slug/${slug}`)
+    return this.handleRequest<IBlogPost>(
+      this.axios.get(`/blogs/slug/${slug}`)
     );
   }
 
   async createBlog(blogData: Omit<IBlogPost, '_id' | 'createdAt' | 'updatedAt' | '__v' | 'slug'>): Promise<IBlogPost> {
-    return this.handleRequest(
-      this.axios.post<IBlogPost>('/blogs', blogData)
+    return this.handleRequest<IBlogPost>(
+      this.axios.post('/blogs', blogData)
     );
   }
 
   async updateBlog(id: string, blogData: Partial<Omit<IBlogPost, '_id' | 'createdAt' | 'updatedAt' | '__v'>>): Promise<IBlogPost> {
-    return this.handleRequest(
-      this.axios.put<IBlogPost>(`/blogs/${id}`, blogData)
+    return this.handleRequest<IBlogPost>(
+      this.axios.put(`/blogs/${id}`, blogData)
     );
   }
 
   async deleteBlog(id: string): Promise<void> {
-    return this.handleRequest(
-      this.axios.delete<void>(`/blogs/${id}`)
+    return this.handleRequest<void>(
+      this.axios.delete(`/blogs/${id}`)
     );
   }
 
   async publishBlog(id: string): Promise<IBlogPost> {
-    return this.handleRequest(
-      this.axios.patch<IBlogPost>(`/blogs/${id}/publish`)
+    return this.handleRequest<IBlogPost>(
+      this.axios.patch(`/blogs/${id}/publish`)
     );
   }
 
   async unpublishBlog(id: string): Promise<IBlogPost> {
-    return this.handleRequest(
-      this.axios.patch<IBlogPost>(`/blogs/${id}/unpublish`)
+    return this.handleRequest<IBlogPost>(
+      this.axios.patch(`/blogs/${id}/unpublish`)
     );
   }
 }
